@@ -1,0 +1,50 @@
+# {{  ansible_managed }}
+[uwsgi]
+socket = /run/uwsgi-{{ _uwsgi_app.name }}/uwsgi.socket
+chmod-socket = 666
+uid = {{ _uwsgi_app.user }}
+gid = {{ _uwsgi_app.user }}
+plugin = python
+chdir = {{ _uwsgi_app.app_root }}
+virtualenv = {{ _uwsgi_app.app_root }}/virtualenv
+wsgi-file = src/wsgi.py
+
+# reload on upgrade
+touch-reload = {{  _uwsgi_app.app_root }}/version.py
+
+procname-prefix-spaced =
+workers = {{ _uwsgi_app.workers|default(2) }}
+
+# autoscale
+cheaper = 1
+cheaper-algo = spare
+cheaper-initial = 1
+cheaper-step = 1
+cheaper-overload = 15
+
+# restart after
+max-request = 1024
+
+# kill workers after 30 seconds
+idle = 90
+
+
+# enable new relic
+#enable-threads = true
+#single-interpreter = true
+
+# eat big POSTs
+post-buffering = 1024
+
+# Set LANG to UTF-8 for Django
+env= LANG=en_US.UTF-8
+
+# celery beat
+#attach-daemon = /apps/XXX/virtualenv/bin/celery beat --app XXX
+
+# celery daemon
+#attach-daemon = /apps/XXX/virtualenv/bin/celery worker --app XXX -n worker --concurrency=2
+
+#attach-daemon = /bin/redis-server /apps/XXX/redis/redis.conf
+#env = REDIS_SOCKET=redis+socket:///run/uwsgi-petrov/redis.socket
+#env = REDIS_LOCATION=/run/uwsgi-petrov/redis.socket

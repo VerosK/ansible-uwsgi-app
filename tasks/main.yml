@@ -1,0 +1,29 @@
+---
+- name: Install uwsgi
+  yum:
+    name: '{{ item }}'
+    enablerepo: epel
+  items:
+    - uwsgi
+    - uwsgi-plugin-python
+
+- name: Install python pip
+  yum:
+    name: python-pip,python-virtualenv
+    enablerepo: epel
+    state: present
+
+- name: Setup uwsgi apps
+  include: one-app.yml
+  with_items: '{{ uwsgi_apps }}'
+  loop_control:
+    loop_var: _uwsgi_app
+
+- meta: flush_handlers
+
+- name: Start applications
+  service:
+    name: 'uwsgi-{{ item.name }}'
+    state: started
+    enabled: true
+  with_items: '{{ uwsgi_apps }}'

@@ -1,0 +1,14 @@
+
+
+uwsgi_apps: []
+#uwsgi_apps: 
+# - name: hellopy
+#   unit_name: uwsgi-hello
+#   user: hellopy
+#   app_root: /home/hellopy
+#   socket: /run/hellopy/uwsgi.socket
+#   workers: 2
+#   requirements: |
+#      xlrd
+#      xlwt
+#      python-docx
