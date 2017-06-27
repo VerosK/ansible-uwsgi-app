@@ -30,10 +30,16 @@
     force: no  # don't overwrite
   register: _pip_requirements
 
+- name: Create src dir
+  file:
+    path: '{{ _uwsgi_app.app_root }}/src'
+    state: directory
+    owner: '{{ _uwsgi_app.user }}'
+
 - name: Upload wsgi entrypoint
   template:
     src: hello.py.j2
-    dest: '{{ uwsgi_app.app_root }}/src/wsgi.py'
+    dest: '{{ _uwsgi_app.app_root }}/src/wsgi.py'
     owner: '{{ _uwsgi_app.user }}'
     force: no   # don't overwrite
 
@@ -47,9 +53,16 @@
 - name: Add virtualenv to login script
   become_user: '{{ _uwsgi_app.user }}'
   lineinfile:
-    dest: '/home/{{ _uwsgi_app.user }}/.bashrc'
+    dest: '{{ _uwsgi_app.app_root }}/.bashrc'
     line: "if [ -f {{ _uwsgi_activate }} ]; then VIRTUAL_ENV_DISABLE_PROMPT=1; . {{ _uwsgi_activate }}; fi"
     state: present
+
+- name: "Create uwsgi sockets in /run/<{{ _uwsgi_app.name }}>"
+  template:
+    src: uwsgi-tmpdir.j2
+    dest: '/etc/tmpfiles.d/uwsgi-{{ _uwsgi_app.name }}.conf'
+    owner: root
+  notify: update tmpfiles
 
 - name: "Create systemd units <{{ _uwsgi_app.name }}>"
   template:
@@ -58,9 +71,3 @@
     owner: root
   notify: reload systemd units
 
-- name: "Create /run/<{{ _uwsgi_app.name }}>"
-  template:
-    src: uwsgi-tmpdir.j2
-    dest: '/etc/tmpfiles.d/uwsgi-{{ _uwsgi_app.name }}.conf'
-    owner: root
-  notify: update tmpfiles

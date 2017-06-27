@@ -12,3 +12,6 @@ uwsgi_apps: []
 #      xlrd
 #      xlwt
 #      python-docx
+
+# Change uwsgi bin path
+#uwsgi_bin_path: '/usr/bin/uwsgi'

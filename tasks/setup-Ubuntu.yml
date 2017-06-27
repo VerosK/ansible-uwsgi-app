@@ -1,0 +1,16 @@
+- include_vars: Ubuntu.yml
+
+- name: Install uwsgi
+  apt:
+    name:
+      - uwsgi
+      - uwsgi-plugin-python
+      - uwsgi-plugin-python3
+
+- name: Install python pip
+  apt:
+    name:
+      - python-pip
+      - python3-pip
+      - python-virtualenv
+    state: present

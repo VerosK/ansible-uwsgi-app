@@ -1,6 +1,6 @@
 # {{  ansible_managed }}
 [uwsgi]
-socket = /run/uwsgi-{{ _uwsgi_app.name }}/uwsgi.socket
+socket = {{ _uwsgi_app.socket }}
 chmod-socket = 666
 uid = {{ _uwsgi_app.user }}
 gid = {{ _uwsgi_app.user }}

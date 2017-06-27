@@ -6,7 +6,7 @@ After=syslog.target
 
 [Service]
 EnvironmentFile=-{{ _uwsgi_app.app_root }}/{{ _uwsgi_app.name }}.env
-ExecStart=/usr/sbin/uwsgi --ini {{ _uwsgi_app.app_root }}/uwsgi.ini
+ExecStart={{ uwsgi_bin_path }} --ini {{ _uwsgi_app.app_root }}/uwsgi.ini
 User={{ _uwsgi_app.user }}
 Group={{ _uwsgi_app.user }}
 Restart=always

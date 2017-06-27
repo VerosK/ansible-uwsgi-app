@@ -1,17 +1,13 @@
 ---
-- name: Install uwsgi
-  yum:
-    name: '{{ item }}'
-    enablerepo: epel
-  items:
-    - uwsgi
-    - uwsgi-plugin-python
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
 
-- name: Install python pip
-  yum:
-    name: python-pip,python-virtualenv
-    enablerepo: epel
-    state: present
+- include: setup-Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Set variables from defaults
+  set_fact:
+     uwsgi_bin_path: '{{ uwsgi_bin_path|default(__uwsgi_bin_path) }}'
 
 - name: Setup uwsgi apps
   include: one-app.yml

@@ -1,0 +1,15 @@
+- include_vars: RedHat.yml
+
+- name: Install uwsgi
+  yum:
+    name: '{{ item }}'
+    enablerepo: epel
+  items:
+    - uwsgi
+    - uwsgi-plugin-python
+
+- name: Install python pip
+  yum:
+    name: python-pip,python-virtualenv
+    enablerepo: epel
+    state: present
