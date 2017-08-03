@@ -1,17 +1,24 @@
 
 
 uwsgi_apps: []
-#uwsgi_apps: 
+#uwsgi_apps:
 # - name: hellopy
 #   unit_name: uwsgi-hello
 #   user: hellopy
 #   app_root: /home/hellopy
+#   src_root: /home/hellopy
 #   socket: /run/hellopy/uwsgi.socket
+#   plugin: python  #python3
+#   python_version_exec: python #python3
+#   # module: wsgi:application # use either module or wsgi-file
+#   wsgi_file: src/wsgi.py
 #   workers: 2
 #   requirements: |
 #      xlrd
 #      xlwt
 #      python-docx
+
+
 
 # Change uwsgi bin path
 #uwsgi_bin_path: '/usr/bin/uwsgi'
