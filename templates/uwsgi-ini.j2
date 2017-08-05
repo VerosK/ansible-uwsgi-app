@@ -4,10 +4,18 @@ socket = {{ _uwsgi_app.socket }}
 chmod-socket = 666
 uid = {{ _uwsgi_app.user }}
 gid = {{ _uwsgi_app.user }}
-plugin = python
-chdir = {{ _uwsgi_app.app_root }}
+plugin = {{ _uwsgi_app.plugin }}
+chdir = {{ _uwsgi_app.src_root }}
 virtualenv = {{ _uwsgi_app.app_root }}/virtualenv
-wsgi-file = src/wsgi.py
+
+{% if _uwsgi_app.module is defined %}
+module = {{ _uwsgi_app.module }}
+{% endif %}
+
+{% if _uwsgi_app.wsgi_file is defined %}
+wsgi-file = {{ _uwsgi_app.wsgi_file }}
+{% endif %}
+
 
 # reload on upgrade
 touch-reload = {{  _uwsgi_app.app_root }}/version.py

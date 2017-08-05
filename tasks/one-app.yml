@@ -16,7 +16,7 @@
 
 - name: "Create virtualenv for <{{ _uwsgi_app.name }}>"
   become_user: '{{ _uwsgi_app.user }}'
-  shell: "virtualenv {{ _uwsgi_app.app_root }}/virtualenv"
+  shell: "virtualenv --python={{ _uwsgi_app.python_version_exec }} {{ _uwsgi_app.app_root }}/virtualenv"
   args:
     creates: '{{ _uwsgi_app.app_root }}/virtualenv/bin/python'
 
@@ -70,4 +70,3 @@
     dest: '/etc/systemd/system/uwsgi-{{ _uwsgi_app.name }}.service'
     owner: root
   notify: reload systemd units
-
