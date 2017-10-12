@@ -8,6 +8,12 @@
     _uwsgi_virtualenv: '{{ _uwsgi_app.app_root }}/virtualenv'
     _uwsgi_activate: '{{ _uwsgi_app.app_root }}/virtualenv/bin/activate'
 
+- name: Ensure directories have correct owner
+  file:
+    dest: '{{ _uwsgi_app.app_root }}'
+    owner: '{{ _uwsgi_app.user }}'
+    group: '{{ _uwsgi_app.user }}'
+
 - name: "Create uwsgi.ini for <{{ _uwsgi_app.name }}>"
   template:
     src: uwsgi-ini.j2
@@ -56,6 +62,7 @@
     dest: '{{ _uwsgi_app.app_root }}/.bashrc'
     line: "if [ -f {{ _uwsgi_activate }} ]; then VIRTUAL_ENV_DISABLE_PROMPT=1; . {{ _uwsgi_activate }}; fi"
     state: present
+    create: yes
 
 - name: "Create uwsgi sockets in /run/<{{ _uwsgi_app.name }}>"
   template:
