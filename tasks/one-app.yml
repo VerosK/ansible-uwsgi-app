@@ -13,7 +13,6 @@
     dest: '{{ _uwsgi_app.app_root }}'
     owner: '{{ _uwsgi_app.user }}'
     group: '{{ _uwsgi_app.user }}'
-    recurse: 'yes'
 
 - name: "Create uwsgi.ini for <{{ _uwsgi_app.name }}>"
   template:
